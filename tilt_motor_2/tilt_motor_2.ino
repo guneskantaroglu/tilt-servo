@@ -23,16 +23,25 @@ void setup()
   
 void loop() 
 { 
-  val1 = analogRead(joypin1);           // reads the value of the potentiometer (value between 0 and 1023) 
-  val1 = map(val1, 0, 1023, 0, 80);    // scale it to use it with the servo (value between 0 and 180) 
+  val1 = smoothing(joypin1);           // reads the value of the potentiometer (value between 0 and 1023) 
+  val1 = map(val1, 0, 1023, 20, 40);    // scale it to use it with the servo (value between 0 and 180) 
   myservo1.write(val1);                // sets the servo position according to the scaled value 
-  delay(15);                           // waits for the servo to get there 
+  delay(155);                           // waits for the servo to get there 
   
-  val2 = analogRead(joypin2);           // reads the value of the potentiometer (value between 0 and 1023) 
-  val2 = map(val2, 0, 1023, 0, 80);    // scale it to use it with the servo (value between 0 and 180) 
+  val2 = smoothing(joypin2);           // reads the value of the potentiometer (value between 0 and 1023) 
+  val2 = map(val2, 0, 1023, 30, 50);   // scale it to use it with the servo (value between 0 and 180)  
   myservo2.write(val2);                // sets the servo position according to the scaled value 
-  delay(15);                     
+  delay(155);                     
   
-  Serial.println(val1);
+  Serial.println(analogRead(joypin1));
+  
+}
+
+int smoothing(int pin) {
+  int val=0;
+  for(int i=0; i<100; i++) {
+   val=val+analogRead(pin)/100;
+  }
+  return val;
   
 }
